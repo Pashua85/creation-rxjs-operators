@@ -32,6 +32,39 @@ of(
 of(value: T): Observable<T>
 ```
 
-Пример с использованием "of" можно посмотреть вот в [этой песочнице](https://stackblitz.com/edit/rxjs-rghhyk)
+Пример с использованием "of" можно посмотреть вот в [этой песочнице](https://stackblitz.com/edit/rxjs-rghhyk):
 
 ![Of example scneenshot](/assets/of-screen.png)
+
+По нажатию на соответствующую кнопку, подгружаются урлы картинок собак определенной породы. В data.message приходит либо массив с адресами картинок, либо текст ошибки:
+
+```ts
+fromEvent(
+  buttons,
+  'click',
+  (e: HTMLElementEvent<HTMLButtonElement>) => e.target.dataset.key
+)
+  .pipe(
+    switchMap((subBreed) => {
+      ...
+      const url = `https://dog.ceo/api/breed/spaniel/${subBreed}/images/random/4`;
+
+      return from(fetch(url).then((res) => res.json())).pipe(
+        map((data: Data) => {
+          return data.message;
+        }),
+        ...
+      );
+    }),
+  )
+  .subscribe((val) => {
+    imagesContainer.innerHTML = '';
+    if (typeof val === 'string') {
+      ...
+    }
+
+    if (Array.isArray(val)) {
+      ...
+    }
+  });
+```
