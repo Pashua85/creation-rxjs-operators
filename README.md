@@ -106,3 +106,68 @@ from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): Observable<T>
 ```
 
 ![from](/assets/from.png)
+
+`scheduler` - это планировщик. Планировщики не являются темой этой статьи, но если кратко, то это объекты, с помощью которых можно влиять на
+время и порядок выполнения колбеков подписки и колбеков из операторов в `pipe`, а конкретнее - можно задать, как именно эти функции попадут в стэк вызовов: напрямую, через очереди микротасков, макротасков или очередь браузера для отрисовки содержимого. Подробнее можно почитать [тут](https://habr.com/ru/post/529000/) и посмотреть [этот доклад](https://www.youtube.com/watch?v=S1eDh7MonbI&t=131s).
+
+Но вернемся к оператору `from`. Я не случайно использовал словосочетание "итерируемое значение", а не "итерируемый объект", потому что `from` работает еще и с примитивом `string`, сообщая в поток знаки из строки по-одному.
+
+```ts
+from(new Set([1, 2, 2, 3, 3])
+  .subscribe({
+	next: value => console.log(“next:”, value),
+  })
+// next: 1
+// next: 2
+// next: 3
+
+from(“String”)
+  .subscribe({
+	next: value => console.log(“next:”, value),
+  })
+// next: S
+// next: t
+// next: r
+// next: i
+// next: n
+// next: g
+
+from(new Promise((resolve) => resolve('I am a promise!'))).subscribe({
+  next: (value) => console.log('next: ', value),
+});
+// next: I am a promise!
+```
+
+А [вот вариант](https://stackblitz.com/edit/rxjs-rfc9rd) приложения с хорошими мальчиками, в котором используется `from` для того, чтобы в поток попали не все url-ы картинок сразу, а по одной (допустим для того, чтобы они появлялись по очереди c полсекунды). Правда при этом пришлось отдельно позаботиться об обработке ошибок, потому что и адрес картинки, и сообщение об ошибке - это строка и просто проверка на тип уже не работает. Также тут `from` используется, чтобы в потоке работать уже с результатом обещания из fetch-запроса:
+
+```ts
+fromEvent(
+  ...
+)
+  .pipe(
+    switchMap((subBreed) => {
+      ...
+
+      return from(fetch(url).then((res) => res.json())).pipe(
+        switchMap((res) => {
+          if (res.status === 'error') {
+            return throwError(() => new Error());
+          }
+          return from(res.message);
+        }),
+        concatMap((val) => {
+          return of(val).pipe(delay(500));
+        })
+      );
+    }),
+    catchError(() => {
+      return of('Error from catch error');
+    })
+  )
+  .subscribe((val) => {
+    if (val === 'Error from catch error') {
+    ...
+    }
+    ...
+  });
+```
