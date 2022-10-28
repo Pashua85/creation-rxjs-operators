@@ -68,3 +68,31 @@ fromEvent(
     }
   });
 ```
+
+При этом для того, чтобы не отправлять запрос для одной и той же породы два раза, можно закэшировать ответ. И если картинки для данной
+породы уже имеются, то switchMap поменяет поток с событиями клика не на поток с результатами запроса, а на поток из Observable, созданный
+c помощью оператора of. Это позволяется ничего не менять в колбэке подписки:
+
+```ts
+fromEvent(
+  ...
+)
+  .pipe(
+    switchMap((subBreed) => {
+      if (cashed.has(subBreed)) {
+        return of(cashed.get(subBreed));
+      }
+      ...
+
+      return from(fetch(url).then((res) => res.json())).pipe(
+        ...
+        tap((data) => {
+          cashed.set(subBreed, data);
+        })
+      );
+    }),
+  )
+  .subscribe((val) => {
+    ...
+  });
+```
