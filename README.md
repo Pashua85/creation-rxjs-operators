@@ -31,3 +31,5 @@ of(
 ```ts
 of(value: T): Observable<T>
 ```
+
+![Alt text](/assets/of-screen.png "Optional title")
