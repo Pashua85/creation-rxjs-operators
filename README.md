@@ -32,4 +32,6 @@ of(
 of(value: T): Observable<T>
 ```
 
-![Alt text](/assets/of-screen.png "Optional title")
+Пример с использованием "of" можно посмотреть вот в [этой песочнице](https://stackblitz.com/edit/rxjs-rghhyk)
+
+![Of example scneenshot](/assets/of-screen.png)
