@@ -171,3 +171,19 @@ fromEvent(
     ...
   });
 ```
+
+## interval
+
+Перейдем к работе со временем. Оператор `interval` создает Observable, который сообщает в поток целые числа, начиная от 0, в поток с указанной периодичностью (в милисекундах).
+
+```ts
+interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number>
+```
+
+![interval](/assets/interval.png)
+
+```ts
+interval(1000).pipe(take(4));
+```
+
+![interval](/assets/interval.gif)
