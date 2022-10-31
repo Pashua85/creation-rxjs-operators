@@ -219,3 +219,35 @@ startIntervalBtn.addEventListener('click', () => {
 Если бы в колбеке подписки не имело бы значение какое число попадает в поток, как в прошлом примере, то все было бы хорошо. Но тут добавлена логика, завязанная на значение из потока, a как мы видим,
 в поток дважды приходит ноль (один раз его эмитит оператор `startWith`, второй - Observable, который создан с помощью `interval` ).
 Можно было бы изначально начать с -1 (`startWith(-1)`), а в функции подписки делать поправку на единицу, но к счастью, есть другой оператор, с помощью которого можно реализовать все проще - `timer`.
+
+## timer
+
+Оператор `timer` создает Observable, который через указанную задержку передает в поток число 0. Если передан только аргумент задержки, то на этом все ограничивается и поток завершается. Если же вторым аргументом указана периодичность, то Observable продолжает передавать числа в поток с указанным интервалом (целые, по восходящей, как у `interval`).
+
+```ts
+timer(dueTime: number | Date = 0, intervalOrScheduler?: number | SchedulerLike, scheduler: SchedulerLike = asyncScheduler): Observable<number>
+```
+
+Стоит отметить, что timeout можно указывать не только в миллисекундах, но и с помощью объекта `Date`, что может пригодиться при реализации различных планировщиков задач.
+
+А вот [реализация](https://stackblitz.com/edit/rxjs-nyfcsh) поведения, которого мы хотели добиться в примере выше, но уже с помощью `timer`:
+
+```ts
+  timerSub = timer(0, 1000)
+    ...
+    .subscribe((val) => {
+      ...
+      timerNumber.innerText = val.toString();
+      timerNumber.style.backgroundColor = getRandomColor();
+    });
+```
+
+## fromEvent
+
+Данный оператор создает Observable, который передает события определенного типа, которые в свою очередь выдал определенный объект.
+
+![fromEvent](/assets/fromEvent.png)
+
+```ts
+fromEvent<T>(target: any, eventName: string, options?: EventListenerOptions | ((...args: any[]) => T), resultSelector?: (...args: any[]) => T): Observable<T>
+```
