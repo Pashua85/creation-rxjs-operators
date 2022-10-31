@@ -256,3 +256,24 @@ fromEvent<T>(
   options?: EventListenerOptions | ((...args: any[]) => T),
   resultSelector?: (...args: any[]) => T): Observable<T>
 ```
+
+Одним из удобств использования этого оператора является то, что в `target` можно передать сразу псевдо-массивы `HTMLCollection` или `NodeList`.
+Он под капотом добавит `eventListener` на каждый элемент, а когда отпишемся от потока - удалит.
+`fromEvent` уже использовался в [примере] с фотографиями пород собак:
+
+```ts
+fromEvent(
+  buttons,
+  'click',
+  (e: HTMLElementEvent<HTMLButtonElement>) => e.target.dataset.key
+)
+  .pipe(
+    switchMap((subBreed: string) => {
+      ...
+    }),
+    ...
+  )
+  .subscribe((val) => {
+    ...
+  });
+```
