@@ -225,7 +225,8 @@ startIntervalBtn.addEventListener('click', () => {
 Оператор `timer` создает Observable, который через указанную задержку передает в поток число 0. Если передан только аргумент задержки, то на этом все ограничивается и поток завершается. Если же вторым аргументом указана периодичность, то Observable продолжает передавать числа в поток с указанным интервалом (целые, по восходящей, как у `interval`).
 
 ```ts
-timer(dueTime: number | Date = 0, intervalOrScheduler?: number | SchedulerLike, scheduler: SchedulerLike = asyncScheduler): Observable<number>
+timer(dueTime: number | Date = 0, intervalOrScheduler?: number | SchedulerLike,
+  scheduler: SchedulerLike = asyncScheduler): Observable<number>
 ```
 
 Стоит отметить, что timeout можно указывать не только в миллисекундах, но и с помощью объекта `Date`, что может пригодиться при реализации различных планировщиков задач.
@@ -249,5 +250,9 @@ timer(dueTime: number | Date = 0, intervalOrScheduler?: number | SchedulerLike, 
 ![fromEvent](/assets/fromEvent.png)
 
 ```ts
-fromEvent<T>(target: any, eventName: string, options?: EventListenerOptions | ((...args: any[]) => T), resultSelector?: (...args: any[]) => T): Observable<T>
+fromEvent<T>(
+  target: any,
+  eventName: string,
+  options?: EventListenerOptions | ((...args: any[]) => T),
+  resultSelector?: (...args: any[]) => T): Observable<T>
 ```
