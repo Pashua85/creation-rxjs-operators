@@ -325,3 +325,22 @@ defer<R extends ObservableInput<any>>(observableFactory: () => R): Observable<Ob
 ```
 
 ![defer](/assets/defer.png)
+
+```ts
+const s1 = of(new Date());
+const s2 = defer(() => of(new Date()));
+
+console.log(new Date());
+
+timer(2000)
+  .pipe(switchMap(() => s1))
+  .subscribe((val) => console.log({ val1: val }));
+
+timer(2000)
+  .pipe(switchMap(() => s2))
+  .subscribe((val) => console.log({ val2: val }));
+
+// 2022-08-30T08:15:17.420Z
+// { val1: “2022-08-30T08:15:17.420Z”}
+// { val2: “2022-08-30T08:15:19.420Z”}
+```
