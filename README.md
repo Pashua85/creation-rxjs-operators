@@ -279,3 +279,37 @@ fromEvent(
 ```
 
 Также ниже будут примеры работы не только с кликом.
+
+## fromFetch
+
+Этот оператор создает Observable из fetch запроса на основе объекта запроса или строки с url.
+
+```ts
+fromFetch<T>(input: string | Request, initWithSelector: RequestInit & { selector?: (response: Response)
+  => ObservableInput<T>; } = {}): Observable<Response | T>
+```
+
+Тут стоит отметить одну особенность работы Observable, созданного с помощью `fromFetch` - при завершении потока в случае, если
+ответ от `fetch` запроса еще не пришел, то этот запрос отменяется. Вот [пример](https://stackblitz.com/edit/rxjs-rtjcdg), где это пригодилось:
+
+```ts
+fromEvent(input, 'input')
+  .pipe(
+    switchMap((event) => {
+      ...
+
+      const url = `https://api.thedogapi.com/v1/breeds/search?q=${
+        (<HTMLInputElement>event.target).value
+      }`;
+
+      return fromFetch(url, { selector: (res) => res.json() });
+    }),
+    ...
+  )
+  .subscribe(...);
+```
+
+Да конечно, в случае, когда пользователь вводит данные для поиска в инпут, в том или ином виде применяется `debounce`, чтобы запросов не было слишком много. Но всё равно мы можем попасть в ситуацию, когда данные от еще не завершенных запросов уже не нужны, данным пример
+упрощен для наглядности. Оператор `switchMap` меняет поток событий ввода в инпут на поток из Observable с запросом, при этом если это уже не первый запрос, то сначала завершится поток из Observable с предыдущим запросом. В итоге старый запрос отменится и экономится трафик:
+
+![fromFetchCancel](/assets/fromFetchCancel.png)
