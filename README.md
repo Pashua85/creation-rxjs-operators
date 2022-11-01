@@ -348,3 +348,36 @@ timer(2000)
 А вот небольшой [пример](https://stackblitz.com/edit/rxjs-d9jrpc) использования `defer`. У нас есть 2 компонента, которые делают одинаковый запрос по клику.
 
 ![deferScreen](/assets/defer-screen.png)
+
+Помимо ключа `api` в заголовке, запрос должен еще включать актуальные данные из состояния приложения (в данном случае - содержимое инпута выше). Поэтому без `defer` нам бы приходилось создавать каждый раз новый Observable для запросов в самих компонентах, что привело бы к дублированию кода. А ведь их могло бы быть и больше 2x, да и логика формирования запроса могла быть намного сложнее. К счастью, с `defer` эти проблемы решены.
+
+```ts
+// index.ts
+export const fetchBreeds$ = defer(() => {
+  const url = `https://api.thedogapi.com/v1/breeds/search?q=${state.seachValue}`;
+
+  return from(
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "X-Api-Key":
+          "live_rsgkSJTtOFKxl2KTHKAwdmfAMiH8fcgb4PzsY0sULZ35fm3ZP2QZSeX705qLaXGs",
+      },
+    }).then((res) => res.json())
+  );
+});
+
+// component1.ts
+  fromEvent(button1, 'click')
+    .pipe(switchMap(() => fetchBreeds$))
+    .subscribe((val: Breed[]) => {
+      ...
+    });
+
+// component2.ts
+  fromEvent(button2, 'click')
+    .pipe(switchMap(() => fetchBreeds$))
+    .subscribe((val: Breed[]) => {
+      ...
+    });
+```
