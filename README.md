@@ -478,3 +478,53 @@ fromEvent(buttons, 'click', (e: HTMLElementEvent<HTMLButtonElement>) =>
 ```
 
 Здесь позиция фишки игрока задается с помощью стилей, для чего ей присваивается соответствующий класс с номером. Нам известно текущее положение фишки (`current`) и количество шагов, которое нужно пройти(`steps`). А благодаря оператору `range` можно не просто попасть из начальной точки в конечную, а красиво пройтись по всем точкам в маршруте.
+
+## throwError
+
+Оператор `throwError` создает Observable, который сразу сообщает ошибку в поток.
+
+```ts
+throwError(errorOrErrorFactory: any, scheduler?: SchedulerLike): Observable<never>
+
+throwError('This is an error!')
+  .subscribe({
+    next: val => console.log(val),
+    complete: () => console.log('Complete!'),
+    error: val => console.log(`Error: ${val}`)
+  });
+
+// 'Error: This is an error!'
+```
+
+Вы могли уже видеть использование `throwError` в [примере с `from`](https://stackblitz.com/edit/rxjs-rfc9rd):
+
+```ts
+fromEvent(
+  ...
+)
+  .pipe(
+    switchMap((subBreed) => {
+      ...
+
+      return from(fetch(url).then((res) => res.json())).pipe(
+        switchMap((res) => {
+          if (res.status === 'error') {
+            return throwError(() => new Error());
+          }
+          ...
+        }),
+        ...
+      );
+    }),
+    catchError(() => {
+      return of('Error from catch error');
+    })
+  )
+  .subscribe((val) => {
+    if (val === 'Error from catch error') {
+      ...
+      return;
+    }
+    ...
+  });
+```
