@@ -402,6 +402,33 @@ resultSelectorOrScheduler?: SchedulerLike | ResultFunc<S, T>, scheduler?: Schedu
 ```
 
 В [этой песочнице](https://stackblitz.com/edit/rxjs-3qc4bi) можно поиграться с примеров, в котором используется `generate`.
-Здесь пользователь вводит количество чисел из последовательности Фибоначчи он хочет увидеть, и нужные числа появляются по одному:
+Здесь пользователь вводит количество чисел из последовательности Фибоначчи он хочет увидеть, и нужные числа появляются по одному, через каждые 90ms:
 
 ![generate](/assets/generate.gif)
+
+```ts
+fromEvent(fibonacciInput, 'input')
+  .pipe(
+    switchMap((event) => {
+      ...
+
+      return generate({
+        initialState: [0, 1],
+        condition: (x) =>
+          x.length <= Number((<HTMLInputElement>event.target).value),
+        iterate: (x) => [...x, x[x.length - 2] + x[x.length - 1]],
+        resultSelector: (x) => x[x.length - 1],
+      }).pipe(
+        startWith(0),
+        concatMap((val) => {
+          return of(val).pipe(delay(90));
+        })
+      );
+    })
+  )
+  .subscribe((val) => {
+    ...
+  });
+```
+
+В состоянии цикла находится массив с числами, но благодаря `resultSelector` в поток попадает только последнее число.
