@@ -1,6 +1,6 @@
 # Операторы создания в rxjs
 
-В этой статье рассматриваются некоторые из наиболее часто используемых операторов для создания Observable.
+Всем привет, меня зовут Павел, я работаю в компании "Takeoff-Staff" frontend-разработчиком. В этой статье я хочу рассказать о некоторых из наиболее часто используемых операторов для создания Observable.
 
 ## of
 
@@ -528,3 +528,49 @@ fromEvent(
     ...
   });
 ```
+
+## P.S. создание кастомного Observable
+
+Операторов для создания Observable много, для каждого кейса можно подобрать нужный. Однако если есть необходимость создать свой, то
+можно это сделать с помощью класса `Obsevable`, передав в его конструктор функцию подписки. Она может возвращать функцию с логикой, которая будет выполняться при завершении потока.
+
+```ts
+class Observable<T> implements Subscribable<T> {
+  ...
+  constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic)
+  ...
+}
+```
+
+Например можно создать свой Observable для `fetch` запросов, который будет также отменять запросы, когда они уже не нужны. Вот [ссылка](https://stackblitz.com/edit/rxjs-lwia8t) на песочницу:
+
+```ts
+fromEvent(input, 'input')
+  .pipe(
+    switchMap((event) => {
+      ...
+
+      return new Observable((observer: Observer<string[]>) => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        fetch(url, { signal })
+          .then((res) => res.json())
+          .then((data) => {
+            observer.next(data);
+            observer.complete();
+          });
+
+        return () => {
+          controller.abort();
+        };
+      });
+    }),
+    ...
+  )
+  .subscribe((val: string[]) => {
+    ...
+  });
+```
+
+На этом всё. Надеюсь, материал в статье был Вам интересен и поможет в дальнейшей работе с `rxjs`.
