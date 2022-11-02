@@ -382,4 +382,20 @@ export const fetchBreeds$ = defer(() => {
     });
 ```
 
+# generate
+
+Этот оператор создает Observable, сообщающий в поток значения на основе цикла
+
+```ts
+generate({
+  initialState: 1,
+  condition: (x) => x < 3,
+  iterate: (x) => x + 1,
+});
+```
+
 ![generate](/assets/generate-3.png)
+
+```ts
+generate<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>, condition?: ConditionFunc<S>, iterate?: IterateFunc<S>, resultSelectorOrScheduler?: SchedulerLike | ResultFunc<S, T>, scheduler?: SchedulerLike): Observable<T>
+```
