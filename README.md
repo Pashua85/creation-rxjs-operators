@@ -400,3 +400,8 @@ generate({
 generate<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>, condition?: ConditionFunc<S>, iterate?: IterateFunc<S>,
 resultSelectorOrScheduler?: SchedulerLike | ResultFunc<S, T>, scheduler?: SchedulerLike): Observable<T>
 ```
+
+В [этой песочнице](https://stackblitz.com/edit/rxjs-3qc4bi) можно поиграться с примеров, в котором используется `generate`.
+Здесь пользователь вводит количество чисел из последовательности Фибоначчи он хочет увидеть, и нужные числа появляются по одному:
+
+![generate](/assets/generate.gif)
