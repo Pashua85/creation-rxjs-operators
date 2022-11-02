@@ -381,3 +381,5 @@ export const fetchBreeds$ = defer(() => {
       ...
     });
 ```
+
+![generate](/assets/generate-2.png)
