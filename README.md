@@ -316,7 +316,7 @@ fromEvent(input, 'input')
 
 Далее в статье мы рассмотрим, как создать свой кастомный Observable для `fetch` запроса с похожим поведением.
 
-# defer
+## defer
 
 Оператор `defer` создает Observable, который при каждой подписке создает новый Observable c помощью функции создания, переданной в аргументе.
 
@@ -382,7 +382,7 @@ export const fetchBreeds$ = defer(() => {
     });
 ```
 
-# generate
+## generate
 
 Этот оператор создает Observable, сообщающий в поток значения на основе цикла
 
@@ -402,7 +402,7 @@ resultSelectorOrScheduler?: SchedulerLike | ResultFunc<S, T>, scheduler?: Schedu
 ```
 
 В [этой песочнице](https://stackblitz.com/edit/rxjs-3qc4bi) можно поиграться с примеров, в котором используется `generate`.
-Здесь пользователь вводит количество чисел из последовательности Фибоначчи он хочет увидеть, и нужные числа появляются по одному, через каждые 90ms:
+Здесь пользователь вводит количество чисел из последовательности Фибоначчи, которое он хочет увидеть, и нужные числа появляются по одному, через каждые 90ms:
 
 ![generate](/assets/generate.gif)
 
@@ -432,3 +432,21 @@ fromEvent(fibonacciInput, 'input')
 ```
 
 В состоянии цикла находится массив с числами, но благодаря `resultSelector` в поток попадает только последнее число.
+
+## range
+
+Оператор `range` создает Observable, который сообщает в поток последовательность чисел, увеличивающихся на единицу
+
+![range](/assets/range.png)
+
+```ts
+range(start: number, count?: number, scheduler?: SchedulerLike): Observable<number>
+
+range(10.3, 4)
+  .subscribe(n => console.log(n));
+
+// 10.3
+// 11.3
+// 12.3
+// 13.3
+```
