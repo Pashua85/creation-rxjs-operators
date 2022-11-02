@@ -396,7 +396,7 @@ generate({
 
 ![generate](/assets/generate-3.png)
 
-```js
+```ts
 generate<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>, condition?: ConditionFunc<S>, iterate?: IterateFunc<S>,
 resultSelectorOrScheduler?: SchedulerLike | ResultFunc<S, T>, scheduler?: SchedulerLike): Observable<T>
 ```
