@@ -454,3 +454,27 @@ range(10.3, 4)
 Чтобы продемонстрировать на боевом примере работу `range`, я сделал упрощенную версию настольной игры в [песочнице](https://stackblitz.com/edit/rxjs-lgu5xe) (правда для одного игрока). Пользователь нажимает на кнопки, имитируя бросок кубика, и фишка игрока передвигается в нужную точку.
 
 ![range](/assets/range.gif)
+
+```ts
+let current = 0;
+
+fromEvent(buttons, 'click', (e: HTMLElementEvent<HTMLButtonElement>) =>
+  Number(e.target.dataset.key)
+)
+  .pipe(
+    ...
+    switchMap((steps) => {
+      if (current === 0) {
+        return range(1, steps);
+      }
+      return range(current + 1, steps);
+    }),
+    ...
+  )
+  .subscribe((val) => {
+    ...
+    player.classList.add(`range__player_${val}`);
+  });
+```
+
+Здесь позиция фишки игрока задается с помощью стилей, для чего ей присваивается соответствующий класс с номером. Нам известно текущее положение фишки (`current`) и количество шагов, которое нужно пройти(`steps`). А благодаря оператору `range` можно не просто попасть из начальной точки в конечную, а красиво пройтись по всем точкам в маршруте.
