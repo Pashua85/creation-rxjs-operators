@@ -32,10 +32,10 @@ of(
 of(value: T): Observable<T>
 ```
    
-Еще  один пример <base target="_blank">Sidfoefef,j </base>
+Еще  один пример <base target="_blank">Sidfoefef,j [этой песочнице](https://stackblitz.com/edit/rxjs-rghhyk) </base>
 
 
-Пример с использованием "of" можно посмотреть вот в [этой песочнице](https://stackblitz.com/edit/rxjs-rghhyk) {:target="_blank" rel="noopener"}:
+Пример с использованием "of" можно посмотреть вот в [этой песочнице](https://stackblitz.com/edit/rxjs-rghhyk):
 
 ![Of example scneenshot](/assets/of-screen.png)
 
