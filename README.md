@@ -31,8 +31,11 @@ of(
 ```ts
 of(value: T): Observable<T>
 ```
+   
+Еще  один пример <a href="https://stackblitz.com/edit/rxjs-rghhyk" target="_blank" rel="noopener">New link</a>
 
-Пример с использованием "of" можно посмотреть вот в [этой песочнице](https://stackblitz.com/edit/rxjs-rghhyk){:target="_blank" rel="noopener"}:
+
+Пример с использованием "of" можно посмотреть вот в [этой песочнице](https://stackblitz.com/edit/rxjs-rghhyk) {:target="_blank" rel="noopener"}:
 
 ![Of example scneenshot](/assets/of-screen.png)
 
