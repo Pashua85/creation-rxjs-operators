@@ -347,7 +347,7 @@ timer(2000)
 
 А вот небольшой [пример](https://stackblitz.com/edit/rxjs-d9jrpc) использования `defer`. У нас есть 2 компонента, которые делают одинаковый запрос по клику.
 
-![deferScreen](/assets/defer-screen.png)
+<a href="https://stackblitz.com/edit/rxjs-d9jrpc">![deferScreen](/assets/defer-screen.png)</a>
 
 Помимо ключа `api` в заголовке, запрос должен еще включать актуальные данные из состояния приложения (в данном случае - содержимое инпута выше). Поэтому без `defer` нам бы приходилось создавать каждый раз новый `Observable` для запросов в самих компонентах, что привело бы к дублированию кода. А ведь их могло бы быть и больше 2x, да и логика формирования запроса могла быть намного сложнее. К счастью, с `defer` эти проблемы решены.
 
@@ -404,7 +404,7 @@ resultSelectorOrScheduler?: SchedulerLike | ResultFunc<S, T>, scheduler?: Schedu
 В [этой песочнице](https://stackblitz.com/edit/rxjs-3qc4bi) можно поиграться с примером, в котором используется `generate`.
 Здесь пользователь вводит количество чисел из последовательности Фибоначчи, которое он хочет увидеть, и нужные числа появляются по одному, через каждые 90ms:
 
-![generate](/assets/generate.gif)
+<a href="https://stackblitz.com/edit/rxjs-3qc4bi">![generate](/assets/generate.gif)</a>
 
 ```ts
 fromEvent(fibonacciInput, 'input')
