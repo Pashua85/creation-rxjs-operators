@@ -32,7 +32,7 @@ of(
 of(value: T): Observable<T>
 ```
    
-Еще  один пример <a href="https://stackblitz.com/edit/rxjs-rghhyk" target="_blank" rel="noopener">New link</a>
+Еще  один пример <base target="_blank">Sidfoefef,j </base>
 
 
 Пример с использованием "of" можно посмотреть вот в [этой песочнице](https://stackblitz.com/edit/rxjs-rghhyk) {:target="_blank" rel="noopener"}:
