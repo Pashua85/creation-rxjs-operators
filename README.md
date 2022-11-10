@@ -453,7 +453,7 @@ range(10.3, 4)
 
 Чтобы продемонстрировать на боевом примере работу `range`, я сделал упрощенную версию настольной игры в [песочнице](https://stackblitz.com/edit/rxjs-lgu5xe) (правда для одного игрока). Пользователь нажимает на кнопки, имитируя бросок кубика, и фишка игрока передвигается в нужную точку.
 
-![range](/assets/range.gif)
+<a href="https://stackblitz.com/edit/rxjs-lgu5xe">![range](/assets/range.gif)</a>
 
 ```ts
 let current = 0;
